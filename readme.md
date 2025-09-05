@@ -62,7 +62,7 @@ flowchart TD
 ## 📦 System Requirements
 
 - **Python 3.9+**
-- **Conda Environment** (recommended for dependency management)
+- **Conda Environment** (recommended for dependency management / optional)
 - **GPU Support** (optional, for enhanced performance)
 
 ### Core Dependencies:
@@ -102,100 +102,34 @@ flowchart TD
 ### 1. Environment Setup
 
 ```bash
-git clone https://github.com/yourusername/ai-pipeline-product-recognition.git
-cd ai-pipeline-product-recognition
+git clone https://github.com/pinak01/Infilect-AI.git
+
 
 # Create optimized conda environment
-conda env create -f environment.yaml
-conda activate ai-pipeline-env
+conda env create -f env.yaml
+
 ```
 
 ### 2. Model Preparation
 
-```bash
-# Download pre-trained models
-python setup_models.py
-
-# Build FAISS knowledge base index
-python build_knowledge_base.py
-```
 
 ### 3. Launch API Service
 
 ```bash
-# Production mode
-python app.py --mode production --workers 4
-
 # Development mode
-python app.py --mode development
+
+python app.py 
 ```
 
-**API Endpoint**: `http://localhost:5000`
+**API Endpoint**: `http://localhost:5000/predict`
 
 ---
 
-## 🌐 API Usage
 
-### Upload Image for Analysis
 
-```bash
-curl -X POST \
-  -F "image=@retail_shelf.jpg" \
-  -F "save_visualization=true" \
-  http://localhost:5000/api/v1/analyze
-```
 
-### Web Interface
 
-Navigate to `http://localhost:5000` for the minimal upload interface.
 
----
-
-## 📊 Response Format
-
-```json
-{
-  "status": "success",
-  "processing_time": "0.87s",
-  "products_detected": 15,
-  "product_groups": {
-    "beverages": {
-      "CocaCola_500ml": {
-        "count": 8,
-        "confidence": 0.94,
-        "positions": [
-          [120, 45, 180, 120],
-          [185, 45, 245, 120]
-        ]
-      },
-      "Pepsi_1L": {
-        "count": 4,
-        "confidence": 0.91,
-        "positions": [[250, 45, 310, 140]]
-      }
-    },
-    "snacks": {
-      "Lays_Classic": {
-        "count": 3,
-        "confidence": 0.88,
-        "positions": [[50, 200, 110, 280]]
-      }
-    }
-  },
-  "visualizations": {
-    "grouped_products": "/static/outputs/grouped_visualization_20250905_143022.jpg",
-    "detection_overlay": "/static/outputs/detection_overlay_20250905_143022.jpg"
-  },
-  "performance_metrics": {
-    "detection_time": "0.23s",
-    "embedding_time": "0.31s",
-    "classification_time": "0.08s",
-    "visualization_time": "0.25s"
-  }
-}
-```
-
----
 
 ## 🎨 Visualization Outputs
 
@@ -206,7 +140,7 @@ The system generates and saves multiple visualization types:
 3. **Heatmap Analysis**: Product density and distribution patterns
 4. **Category Distribution**: Statistical breakdowns of product types
 
-All visualizations are automatically saved to the `/static/outputs/` directory with timestamps.
+
 
 ---
 
@@ -217,7 +151,7 @@ All visualizations are automatically saved to the `/static/outputs/` directory w
 | **Detection Engine** | YOLOv8              | Real-time object detection     |
 | **Embedding Model**  | img2vec-pytorch     | Feature extraction             |
 | **Vector Search**    | FAISS               | Ultra-fast similarity matching |
-| **API Framework**    | Flask + Gunicorn    | Scalable web service           |
+| **API Framework**    | Flask               | Scalable web service           |
 | **Visualization**    | Matplotlib + OpenCV | Image analysis output          |
 | **Environment**      | Conda               | Dependency management          |
 
@@ -227,30 +161,7 @@ All visualizations are automatically saved to the `/static/outputs/` directory w
 
 - **Average Response Time**: < 1.2 seconds per image
 - **Concurrent Users**: Up to 50 simultaneous requests
-- **Detection Accuracy**: 94.2% mAP@0.5
 - **Throughput**: 150+ images per minute (single instance)
-
----
-
-## 🚀 Deployment & Scaling
-
-### Production Deployment
-
-```bash
-# Using Gunicorn for production
-gunicorn -w 4 -b 0.0.0.0:5000 --timeout 120 app:app
-
-# Docker deployment
-docker build -t ai-pipeline-api .
-docker run -p 5000:5000 -v ./outputs:/app/static/outputs ai-pipeline-api
-```
-
-### Scaling Strategies
-
-- **Horizontal Scaling**: Deploy multiple instances behind a load balancer
-- **GPU Acceleration**: Utilize CUDA for faster inference
-- **Caching Layer**: Implement Redis for frequently accessed results
-- **CDN Integration**: Serve visualization files through content delivery network
 
 ---
 
