@@ -103,9 +103,11 @@ flowchart TD
 
 ```bash
 git clone https://github.com/pinak01/Infilect-AI.git
+cd Infilect-AI
+open the index.html
+python app.py
 
-
-# Create optimized conda environment
+# Create optimized conda environment(optional)
 conda env create -f env.yaml
 
 ```
