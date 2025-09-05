@@ -161,7 +161,7 @@ The system generates and saves multiple visualization types:
 
 ## 📈 Performance Benchmarks
 
-- **Average Response Time**: < 1.2 seconds per image
+- **Average Response Time**: < 2.5 seconds per image
 - **Concurrent Users**: Up to 50 simultaneous requests
 - **Throughput**: 150+ images per minute (single instance)
 
