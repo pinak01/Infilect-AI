@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Detection Frontend</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+    }
+    #preview {
+      max-width: 500px;
+      margin-top: 10px;
+    }
+    #result-img {
+      max-width: 500px;
+      margin-top: 20px;
+      border: 2px solid #ccc;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <h2>Product Detection Demo</h2>
+  <form id="upload-form">
+    <input type="file" id="file-input" accept="image/*" required>
+    <button type="submit">Upload & Detect</button>
+  </form>
+
+  <img id="preview" src="" alt="Preview" style="display:none;">
+  <h3>Annotated Output:</h3>
+  <img id="result-img" src="" alt="Result" style="display:none;">
+  <h3>Detections JSON:</h3>
+  <pre id="json-output"></pre>
+
+  <script>
+    const backendUrl = "http://localhost:5000/predict"; // change if deployed
+
+    const form = document.getElementById("upload-form");
+    const fileInput = document.getElementById("file-input");
+    const preview = document.getElementById("preview");
+    const resultImg = document.getElementById("result-img");
+    const jsonOutput = document.getElementById("json-output");
+
+    // preview selected image
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+      }
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      jsonOutput.textContent = "Running detection...";
+      resultImg.style.display = "none";
+
+      try {
+        const resp = await fetch(backendUrl, {
+          method: "POST",
+          body: formData
+        });
+        const data = await resp.json();
+
+        // show detections
+        jsonOutput.textContent = JSON.stringify(data.detections, null, 2);
+
+        // show annotated image
+        if (data.annotated_image_base64) {
+          resultImg.src = "data:image/jpeg;base64," + data.annotated_image_base64;
+          resultImg.style.display = "block";
+        }
+      } catch (err) {
+        jsonOutput.textContent = "Error: " + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
