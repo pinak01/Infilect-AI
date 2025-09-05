@@ -1,4 +1,4 @@
-# 🤖 AI Pipeline Product Recognition API (Scalable Computer Vision Service)
+# 🤖 AI Pipeline Product Recognition API
 
 This repository contains a **high-performance AI pipeline application** that serves product recognition through a simple REST API. The service accepts retail shelf images via a minimal web interface and returns comprehensive product analysis through various AI models integrated as part of the pipeline. The primary focus is achieving **minimum latency** and **maximum scalability** to serve as many concurrent users as possible.
 
